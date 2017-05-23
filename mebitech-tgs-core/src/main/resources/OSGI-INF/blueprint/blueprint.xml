@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+           xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd"
+           default-activation="eager">
+
+
+    <service ref="productRequestProcessor"
+             interface="com.mebitech.tgs.core.api.rest.processors.IProductRequestProcessor"/>
+    <bean id="productRequestProcessor" class="com.mebitech.tgs.rest.ProductRequestProcessorImpl">
+        <property name="productDao" ref="productDao"/>
+        <property name="responseFactory" ref="responseFactory"/>
+    </bean>
+
+    <service ref="productDao" interface="com.mebitech.tgs.core.api.persistence.dao.IProductDao"/>
+    <bean id="productDao" init-method="init" destroy-method="destroy"
+          class="com.mebitech.tgs.persistence.dao.ProductDaoImpl">
+        <jpa:context property="entityManager" unitname="tgs"/>
+        <tx:transaction method="*" value="Required"/>
+    </bean>
+
+    <!-- Service Info Add -->
+    <service ref="dosyaDao" interface="com.mebitech.tgs.core.api.persistence.dao.IDosyaDao"/>
+    <bean id="dosyaDao" init-method="init" destroy-method="destroy"
+          class="com.mebitech.tgs.persistence.dao.DosyaDaoImpl">
+        <tx:transaction method="*" value="Required"/>
+        <jpa:context property="entityManager" unitname="tgs"/>
+    </bean>
+    <service ref="dosyaRequestProcessor" interface="com.mebitech.tgs.core.api.rest.processors.IDosyaRequestProcessor"/>
+    <bean id="dosyaRequestProcessor" class="com.mebitech.tgs.rest.DosyaRequestProcessorImpl">
+        <property name="dosyaDao" ref="dosyaDao"/>
+        <property name="responseFactory" ref="responseFactory"/>
+    </bean>
+
+    <service ref="personelDao" interface="com.mebitech.tgs.core.api.persistence.dao.IPersonelDao"/>
+    <bean id="personelDao" init-method="init" destroy-method="destroy"
+          class="com.mebitech.tgs.persistence.dao.PersonelDaoImpl">
+        <tx:transaction method="*" value="Required"/>
+        <jpa:context property="entityManager" unitname="tgs"/>
+    </bean>
+    <service ref="personelRequestProcessor"
+             interface="com.mebitech.tgs.core.api.rest.processors.IPersonelRequestProcessor"/>
+    <bean id="personelRequestProcessor" class="com.mebitech.tgs.rest.PersonelRequestProcessorImpl">
+        <property name="personelDao" ref="personelDao"/>
+        <property name="responseFactory" ref="responseFactory"/>
+    </bean>
+
+    <service ref="ucakDao" interface="com.mebitech.tgs.core.api.persistence.dao.IUcakDao"/>
+    <bean id="ucakDao" init-method="init" destroy-method="destroy" class="com.mebitech.tgs.persistence.dao.UcakDaoImpl">
+        <tx:transaction method="*" value="Required"/>
+        <jpa:context property="entityManager" unitname="tgs"/>
+    </bean>
+    <service ref="ucakRequestProcessor" interface="com.mebitech.tgs.core.api.rest.processors.IUcakRequestProcessor"/>
+    <bean id="ucakRequestProcessor" class="com.mebitech.tgs.rest.UcakRequestProcessorImpl">
+        <property name="ucakDao" ref="ucakDao"/>
+        <property name="responseFactory" ref="responseFactory"/>
+    </bean>
+
+    <service ref="ucusTuruDao" interface="com.mebitech.tgs.core.api.persistence.dao.IUcusTuruDao"/>
+    <bean id="ucusTuruDao" init-method="init" destroy-method="destroy"
+          class="com.mebitech.tgs.persistence.dao.UcusTuruDaoImpl">
+        <tx:transaction method="*" value="Required"/>
+        <jpa:context property="entityManager" unitname="tgs"/>
+    </bean>
+    <service ref="ucusTuruRequestProcessor"
+             interface="com.mebitech.tgs.core.api.rest.processors.IUcusTuruRequestProcessor"/>
+    <bean id="ucusTuruRequestProcessor" class="com.mebitech.tgs.rest.UcusTuruRequestProcessorImpl">
+        <property name="ucusTuruDao" ref="ucusTuruDao"/>
+        <property name="responseFactory" ref="responseFactory"/>
+    </bean>
+
+    <service ref="ucakTipiDao" interface="com.mebitech.tgs.core.api.persistence.dao.IUcakTipiDao"/>
+    <bean id="ucakTipiDao" init-method="init" destroy-method="destroy"
+          class="com.mebitech.tgs.persistence.dao.UcakTipiDaoImpl">
+        <tx:transaction method="*" value="Required"/>
+        <jpa:context property="entityManager" unitname="tgs"/>
+    </bean>
+    <service ref="ucakTipiRequestProcessor"
+             interface="com.mebitech.tgs.core.api.rest.processors.IUcakTipiRequestProcessor"/>
+    <bean id="ucakTipiRequestProcessor" class="com.mebitech.tgs.rest.UcakTipiRequestProcessorImpl">
+        <property name="ucakTipiDao" ref="ucakTipiDao"/>
+        <property name="responseFactory" ref="responseFactory"/>
+    </bean>
+
+    <service ref="tehirTanimDao" interface="com.mebitech.tgs.core.api.persistence.dao.ITehirTanimDao"/>
+    <bean id="tehirTanimDao" init-method="init" destroy-method="destroy"
+          class="com.mebitech.tgs.persistence.dao.TehirTanimDaoImpl">
+        <tx:transaction method="*" value="Required"/>
+        <jpa:context property="entityManager" unitname="tgs"/>
+    </bean>
+    <service ref="tehirTanimRequestProcessor"
+             interface="com.mebitech.tgs.core.api.rest.processors.ITehirTanimRequestProcessor"/>
+    <bean id="tehirTanimRequestProcessor" class="com.mebitech.tgs.rest.TehirTanimRequestProcessorImpl">
+        <property name="tehirTanimDao" ref="tehirTanimDao"/>
+        <property name="responseFactory" ref="responseFactory"/>
+    </bean>
+
+    <reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
+    <reference id="dbService"
+               interface="com.mebitech.core.api.persistence.IDbService"/>
+    <reference id="entityFactory"
+               interface="com.mebitech.core.api.persistence.factories.IEntityFactory"/>
+    <reference id="resultFactory"
+               interface="com.mebitech.core.api.service.ICommandResultFactory"/>
+    <reference id="configurationService"
+               interface="com.mebitech.core.api.configuration.IConfigurationService"/>
+    <reference id="responseFactory"
+               interface="com.mebitech.core.api.rest.IResponseFactory"/>
+</blueprint>

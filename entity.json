@@ -1,0 +1,5 @@
+[
+	{"columnName":"hareketTarih","columnType":"Date","dbColumnName":"HAREKETTARIH","dbColumnType":"DATE","columnSize":0},
+	{"columnName":"varisTarih","columnType":"Date","dbColumnName":"VARISTARIH","dbColumnType":"DATE","columnSize":0},
+	{"columnName":"yurtKontrol","columnType":"Boolean","dbColumnName":"YURT","dbColumnType":"BIT","columnSize":0}
+]
